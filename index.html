@@ -1,0 +1,2167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Athlete Health & Environmental Safety</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#eef7f8;color:#183b40}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#073f43,#0d7775)}
+.login-card{width:100%;max-width:420px;background:#fff;border-radius:26px;padding:34px 26px;text-align:center;box-shadow:0 18px 50px rgba(0,0,0,.22)}
+.login-icon{font-size:58px}.login-card h1{margin:8px 0}.login-card p{color:#667b80;line-height:1.5}
+input,select{width:100%;padding:13px;border:1px solid #cbdcdf;border-radius:12px;background:#fff;outline:none}input:focus,select:focus{border-color:#0d8f8b}
+.primary-btn{width:100%;padding:14px;border:0;border-radius:13px;background:#0b8d89;color:#fff;font-weight:800;margin-top:12px}.primary-btn:hover{filter:brightness(.95)}
+#appContent{display:none;min-height:100vh;padding-bottom:85px}.app-header{background:linear-gradient(135deg,#063f43,#0a7774);color:#fff;padding:25px 20px;display:flex;justify-content:space-between;align-items:center}.app-header p{margin:0 0 5px;opacity:.85}.app-header h1{margin:0;font-size:27px}.header-icon{font-size:42px}
+.container{max-width:720px;margin:auto;padding:18px}.app-section{display:none}.app-section.active{display:block}
+.welcome-card,.card-section,.emergency-card{background:#fff;border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 7px 22px rgba(13,72,76,.08)}
+.welcome-card h2,.card-section h2{margin-top:0}.welcome-card p,.card-section p{color:#63787c;line-height:1.55}
+.quick-grid,.monitoring-grid,.safety-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.quick-card{border:0;background:#e9f7f6;padding:20px 10px;border-radius:16px;font-weight:800;color:#075e5d}.quick-card:hover{background:#d8efee}
+label{display:block;font-size:13px;font-weight:800;margin:13px 0 6px;color:#40575b}.result-box{background:#eff9f8;padding:15px;border-radius:15px;margin-top:14px}.monitor-card,.safety-mini{background:#f7fbfb;padding:15px;border-radius:16px;border-left:4px solid #0b8d89}.monitor-card span{font-size:23px}.monitor-card h3,.safety-mini h3{font-size:13px;margin:6px 0}.monitor-card strong,.safety-mini strong{display:block;color:#075e5d;font-size:17px}
+.emergency-card{border-left:5px solid #e05b5b}.preview-image{width:100%;max-height:280px;object-fit:contain;border-radius:15px;margin-top:12px;display:none}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;max-width:720px;margin:auto;background:#fff;border-top:1px solid #dce7e8;display:grid;grid-template-columns:repeat(4,1fr);padding:7px;z-index:1000;box-shadow:0 -5px 20px rgba(0,0,0,.06)}.bottom-nav button{border:0;background:transparent;padding:9px 5px;font-size:12px;color:#52686c}.bottom-nav button:hover{color:#087b78}
+.safety-center{background:linear-gradient(160deg,#082f32,#064e52);color:#fff;border-radius:22px;padding:18px;margin-bottom:18px;box-shadow:0 12px 28px rgba(4,47,50,.2)}.safety-center h2{margin:0 0 5px}.safety-sub{font-size:13px;opacity:.8;margin-bottom:14px}.safety-center label{color:#d5eeee}.safety-center input{background:#f9ffff}.analyze-row{display:grid;grid-template-columns:1fr 85px;gap:10px}.analyze-btn{border:0;border-radius:13px;background:#22b8b1;color:#fff;font-weight:800}.score-card{background:#fff;color:#173a3d;border-radius:18px;padding:18px;text-align:center;margin-top:14px}.score-number{font-size:42px;font-weight:900;margin:3px 0}.score-bar{height:11px;background:#e6eeee;border-radius:99px;overflow:hidden}.score-fill{height:100%;width:0;background:#22a99f;border-radius:99px;transition:.4s}.status-pill{display:inline-block;padding:7px 14px;border-radius:99px;font-weight:900;font-size:12px;margin-top:10px;background:#dff6f3;color:#08726e}.safety-detail{background:#fff;color:#173a3d;border-radius:16px;padding:14px;margin-top:12px}.recommendation{background:#0b7775;border-radius:15px;padding:14px;margin-top:12px}.alert-list{margin:8px 0 0;padding-left:20px}.workout-decision{background:#fff;color:#173a3d;border-radius:16px;padding:16px;margin-top:12px;text-align:center}.decision{font-size:21px;font-weight:900;margin:8px 0}.history-table{width:100%;border-collapse:collapse;font-size:12px}.history-table th,.history-table td{padding:8px;border-bottom:1px solid #dce7e8;text-align:left}.small-note{font-size:12px;color:#718386}.tag{display:inline-block;padding:5px 9px;border-radius:8px;background:#e8f6f5;color:#086f6c;font-size:11px;font-weight:800}
+.report-card{background:#f6fbfb;border-radius:16px;padding:16px}.report-row{display:flex;justify-content:space-between;border-bottom:1px dashed #c9d9da;padding:8px 0}.report-row:last-child{border-bottom:0}
+.history-graph{display:flex;align-items:flex-end;gap:10px;height:150px;padding:18px 8px 8px;background:#f6fbfb;border-radius:14px;margin-top:12px}
+.graph-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:5px}
+.graph-bar{width:100%;max-width:42px;background:linear-gradient(180deg,#22b8b1,#08726e);border-radius:8px 8px 3px 3px;min-height:6px;transition:.4s}
+.graph-score{font-size:11px;font-weight:900;color:#075e5d}
+.graph-time{font-size:9px;color:#718386;white-space:nowrap}
+.trend-good{color:#08743d}.trend-caution{color:#875d00}.trend-risk{color:#a40000}
+
+@media(max-width:520px){.quick-grid,.monitoring-grid,.safety-grid{grid-template-columns:1fr 1fr}.container{padding:13px}.app-header h1{font-size:23px}.analyze-row{grid-template-columns:1fr}.analyze-btn{padding:13px}.history-table{font-size:11px}}
+</style>
+</head>
+<body>
+
+<div id="loginScreen" class="login-screen">
+  <div class="login-card">
+    <div class="login-icon">🏃‍♀️</div>
+    <h1>Welcome</h1>
+    <p>Smart Athlete Health & Environmental Safety Platform</p>
+    <input id="nameInput" type="text" placeholder="Enter your name" autocomplete="off">
+    <button id="enterButton" class="primary-btn">Enter App</button>
+  </div>
+</div>
+
+<div id="appContent">
+<header class="app-header">
+  <div><p>Hello 👋</p><h1 id="userName">Athlete</h1></div>
+  <div class="header-icon">🏃‍♀️</div>
+</header>
+
+<main class="container">
+<section id="homeSection" class="app-section active">
+  <div class="welcome-card"><h2>Smart Athlete Health</h2><p>Monitor health, hydration, environment and workout safety in one place.</p></div>
+  <div class="card-section"><h2>⚡ Quick Services</h2><div class="quick-grid">
+    <button class="quick-card" onclick="showSection('healthSection')">❤️ Health</button>
+    <button class="quick-card" onclick="showSection('symptomChecker')">🤖 AI Check</button>
+    <button class="quick-card" onclick="showSection('environmentSection')">☀️ Environment</button>
+    <button class="quick-card" onclick="showSection('nutritionSection')">🥗 Nutrition</button>
+  </div></div>
+  <div class="card-section"><h2>📊 Last Screening Result</h2><div id="lastResult" class="result-box">No screening result available yet.</div></div>
+  <div class="emergency-card"><h2>🚨 Emergency Assistance</h2><p>If someone has severe or concerning symptoms, seek immediate professional medical help.</p><strong>Safety First</strong><p>This application is an awareness and screening prototype. It does not replace professional medical evaluation.</p></div>
+</section>
+
+<section id="healthSection" class="app-section">
+  <div class="welcome-card"><h2>❤️ Health Assessment</h2><p>Enter health and exercise information for a preliminary safety assessment.</p></div>
+  <div class="card-section"><h2>📋 Health Information</h2>
+    <label>Heart Rate (bpm)</label><input id="heartRate" type="number" placeholder="Example: 85">
+    <label>Body Temperature (°C)</label><input id="bodyTemperature" type="number" step="0.1" placeholder="Example: 37">
+    <label>Ambient Temperature (°C)</label><input id="ambientTemperature" type="number" step="0.1" placeholder="Example: 30">
+    <label>Humidity (%)</label><input id="humidity" type="number" placeholder="Example: 65">
+    <label>UV Index</label><input id="uvIndex" type="number" step="0.1" placeholder="Example: 5">
+    <label>Exercise Duration (minutes)</label><input id="exerciseMinutes" type="number" placeholder="Example: 60">
+    <label>Pre-Exercise Weight (kg)</label><input id="preExerciseWeight" type="number" step="0.1" placeholder="Example: 54">
+    <label>Post-Exercise Weight (kg)</label><input id="postExerciseWeight" type="number" step="0.1" placeholder="Example: 52.8">
+    <label>Fluid Intake (litres)</label><input id="fluidIntake" type="number" step="0.1" placeholder="Example: 0.5">
+    <label>Urine Output (litres)</label><input id="urineOutput" type="number" step="0.1" placeholder="Example: 0.2">
+    <button class="primary-btn" onclick="assessHealth()">🔍 Assess Health</button>
+  </div>
+  <div id="healthResult" class="card-section" style="display:none"><h2>📊 Assessment Result</h2><div class="monitoring-grid">
+    <div class="monitor-card"><span>🚦</span><h3>Overall Risk</h3><strong id="overallRisk">-</strong></div>
+    <div class="monitor-card"><span>💧</span><h3>Dehydration</h3><strong id="dehydrationPercent">-</strong></div>
+    <div class="monitor-card"><span>💦</span><h3>Sweat Loss</h3><strong id="sweatLossLitres">-</strong></div>
+    <div class="monitor-card"><span>🏃</span><h3>Sweat Rate</h3><strong id="sweatRate">-</strong></div>
+    <div class="monitor-card"><span>💧</span><h3>Hydration Risk</h3><strong id="hydrationRisk">-</strong></div>
+    <div class="monitor-card"><span>☀️</span><h3>UV Risk</h3><strong id="uvRisk">-</strong></div>
+    <div class="monitor-card"><span>🌡️</span><h3>Heat Risk</h3><strong id="heatRisk">-</strong></div>
+    <div class="monitor-card"><span>🔥</span><h3>Heat Score</h3><strong id="heatScore">-</strong></div>
+  </div><div class="welcome-card" style="margin-top:15px"><h3>💡 Recommendation</h3><p id="healthRecommendation">-</p></div></div>
+</section>
+
+<!-- ================================================= -->
+<!-- AI SKIN SCREENING -->
+<!-- ================================================= -->
+
+<section id="symptomChecker" class="app-section">
+
+    <div class="welcome-card">
+
+        <h2>🤖 AI Skin Screening</h2>
+
+        <p>
+            Upload an image and provide symptoms for
+            preliminary awareness screening.
+        </p>
+
+    </div>
+
+
+    <!-- IMAGE UPLOAD -->
+
+    <div class="card-section">
+
+        <h2>📷 Upload Skin Image</h2>
+
+        <input
+            type="file"
+            id="skinImage"
+            accept="image/*"
+            onchange="previewSkinImage()"
+        >
+
+        <img
+            id="skinPreview"
+            class="preview-image"
+            alt="Uploaded skin image"
+        >
+
+    </div>
+
+
+    <!-- SYMPTOM DETAILS -->
+
+    <div class="card-section">
+
+        <h2>🩺 Symptom Details</h2>
+
+        <label>Visible Symptom</label>
+
+        <select id="skinSymptom">
+
+            <option value="">
+                Select symptom
+            </option>
+
+            <option value="redness">
+                Redness
+            </option>
+
+            <option value="rash">
+                Rash
+            </option>
+
+            <option value="itching">
+                Itching
+            </option>
+
+            <option value="swelling">
+                Swelling
+            </option>
+
+            <option value="dryness">
+                Dry / Irritated Skin
+            </option>
+
+        </select>
+
+
+        <label>How long has it been present?</label>
+
+        <select id="skinDuration">
+
+            <option value="">
+                Select duration
+            </option>
+
+            <option value="today">
+                Started today
+            </option>
+
+            <option value="days">
+                1–3 days
+            </option>
+
+            <option value="week">
+                More than a week
+            </option>
+
+        </select>
+
+
+        <label>Itching or discomfort?</label>
+
+        <select id="skinDiscomfort">
+
+            <option value="">
+                Select
+            </option>
+
+            <option value="yes">
+                Yes
+            </option>
+
+            <option value="no">
+                No
+            </option>
+
+        </select>
+
+
+        <button
+            class="primary-btn"
+            onclick="screenSkinImage()"
+        >
+            🤖 Analyze Image & Symptoms
+        </button>
+
+    </div>
+
+
+    <!-- RESULT -->
+
+    <div
+        id="skinResult"
+        class="card-section"
+        style="display:none;"
+    >
+
+        <h2>📊 AI Screening Result</h2>
+
+
+        <p>
+            <strong>🔎 Possible Concern:</strong>
+            <span id="skinFinding">-</span>
+        </p>
+
+
+        <p>
+            <strong>🧠 Possible Reason:</strong>
+            <span id="skinReason">-</span>
+        </p>
+
+
+        <p>
+            <strong>⚠️ Risk Level:</strong>
+            <span id="skinRisk">-</span>
+        </p>
+
+
+        <p>
+            <strong>📊 Confidence:</strong>
+            <span id="skinConfidence">-</span>
+        </p>
+
+
+        <p>
+            <strong>💡 Recommendation:</strong>
+            <span id="skinMessage">-</span>
+        </p>
+
+
+        <div
+            style="
+                margin-top:20px;
+                padding:15px;
+                border-radius:12px;
+                background:#fff4e6;
+            "
+        >
+
+            ⚠️ <strong>Medical Safety Notice</strong>
+
+            <p>
+                This prototype provides preliminary awareness
+                screening only. It cannot confirm a medical
+                diagnosis from an image.
+            </p>
+
+            <p>
+                Persistent, severe, spreading or worsening
+                symptoms should be evaluated by a qualified
+                healthcare professional.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section id="environmentSection" class="app-section">
+  <div class="welcome-card"><h2>☀️ Environment & Workout</h2><p>Check environmental conditions before outdoor activity.</p></div>
+  <div class="card-section"><h2>🌤️ Environmental Conditions</h2><label>Temperature (°C)</label><input id="workoutTemperature" type="number" placeholder="Example: 30"><label>Humidity (%)</label><input id="workoutHumidity" type="number" placeholder="Example: 70"><label>UV Index</label><input id="workoutUV" type="number" placeholder="Example: 5"><label>Precipitation Probability (%)</label><input id="precipitation" type="number" placeholder="Example: 20"><button class="primary-btn" onclick="checkWorkout()">🌤️ Check Workout Safety</button></div>
+  <div id="workoutResult" class="card-section" style="display:none"><h2>📊 Workout Recommendation</h2><p><strong>Rating:</strong> <span id="workoutRating">-</span></p><p id="workoutMessage">-</p></div>
+</section>
+
+<section id="nutritionSection" class="app-section">
+  <div class="welcome-card"><h2>🥗 Nutrition & Recovery</h2><p>General educational guidance for training and recovery.</p></div>
+  <div class="card-section"><label>Exercise Duration (minutes)</label><input id="nutritionExerciseMinutes" type="number" placeholder="Example: 60"><label>Heat Risk</label><select id="nutritionHeatRisk"><option>Low Risk</option><option>Moderate Risk</option><option>High Risk</option></select><button class="primary-btn" onclick="getNutritionGuidance()">🥗 Get Guidance</button></div>
+  <div id="nutritionResult" class="card-section" style="display:none"><h2 id="nutritionTitle">Guidance</h2><ul id="nutritionGuidance"></ul></div>
+</section>
+
+<!-- PROFILE SECTION -->
+<section id="profileSection" class="app-section">
+
+    <div class="welcome-card">
+        <h2>👤 Athlete Profile</h2>
+        <p>Manage your personal and workout information</p>
+    </div>
+
+    <div class="card-section">
+
+        <h2>📝 Personal Details</h2>
+
+        <label>Full Name</label>
+        <input
+            type="text"
+            id="profileFullName"
+            placeholder="Enter your full name"
+        >
+
+        <label>Age</label>
+        <input
+            type="number"
+            id="profileAge"
+            placeholder="Enter your age"
+        >
+
+        <label>Gender</label>
+        <select id="profileGender">
+            <option value="">Select Gender</option>
+            <option>Female</option>
+            <option>Male</option>
+            <option>Prefer not to say</option>
+        </select>
+
+        <label>Sport / Activity</label>
+        <input
+            type="text"
+            id="profileSport"
+            placeholder="Example: Running"
+        >
+
+        <label>Fitness Level</label>
+        <select id="profileFitness">
+            <option value="">Select Fitness Level</option>
+            <option>Beginner</option>
+            <option>Intermediate</option>
+            <option>Advanced</option>
+        </select>
+
+        <label>Workout Goal</label>
+        <select id="profileGoal">
+            <option value="">Select Workout Goal</option>
+            <option>General Fitness</option>
+            <option>Endurance</option>
+            <option>Strength</option>
+            <option>Performance</option>
+        </select>
+
+        <label>Height (cm)</label>
+        <input
+            type="number"
+            id="profileHeight"
+            placeholder="Example: 165"
+        >
+
+        <label>Weight (kg)</label>
+        <input
+            type="number"
+            id="profileWeight"
+            placeholder="Example: 55"
+        >
+
+        <button
+            type="button"
+            class="primary-btn"
+            onclick="saveAthleteProfile()"
+        >
+            💾 Save Profile
+        </button>
+
+        <div
+            id="profileSavedMessage"
+            style="
+                display:none;
+                margin-top:15px;
+                padding:12px;
+                border-radius:10px;
+                background:#dff7ea;
+                color:#08743d;
+                font-weight:bold;
+            "
+        >
+            ✅ Profile saved successfully!
+        </div>
+
+    </div>
+
+
+    <!-- SAVED DETAILS -->
+
+    <div class="card-section">
+
+        <h2>📋 My Profile</h2>
+
+        <div id="savedProfileDetails">
+
+            <p>No profile details saved yet.</p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- SMART ATHLETE SAFETY CENTER -->
+<section class="safety-center">
+  <h2>🧠 Smart Athlete Safety Center</h2>
+  <div class="safety-sub">Health • Hydration • Environment • Workout Safety</div>
+  <div class="safety-grid">
+    <div><label>💧 Dehydration (%)</label><input id="sDehydration" type="number" step="0.01" value="2.22"></div>
+    <div><label>❤️ Heart Rate (bpm)</label><input id="sHeartRate" type="number" value="85"></div>
+    <div><label>🌡️ Temperature (°C)</label><input id="sTemperature" type="number" step="0.1" value="30"></div>
+    <div><label>💦 Humidity (%)</label><input id="sHumidity" type="number" value="65"></div>
+    <div><label>☀️ UV Index</label><input id="sUV" type="number" step="0.1" value="5"></div>
+    <div><label>🏃 Workout Minutes</label><input id="sWorkout" type="number" value="60"></div>
+  </div>
+  <div class="analyze-row"><button class="analyze-btn" onclick="runSmartAthleteAssessment()">🧠 Analyze Safety</button><button class="analyze-btn" onclick="fillSample()">Sample</button></div>
+
+  <div id="safetyOutput" style="display:none">
+    <div class="score-card"><div>ATHLETE SAFETY SCORE</div><div id="safetyScore" class="score-number">0/100</div><div id="safetyStatus" class="status-pill">-</div><div class="score-bar"><div id="scoreFill" class="score-fill"></div></div></div>
+    <div class="safety-grid" style="margin-top:12px">
+      <div class="safety-mini"><h3>💧 Hydration</h3><strong id="sHydrationStatus">-</strong></div>
+      <div class="safety-mini"><h3>❤️ Heart Rate</h3><strong id="sHeartStatus">-</strong></div>
+      <div class="safety-mini"><h3>🌡️ Heat Risk</h3><strong id="sHeatStatus">-</strong></div>
+      <div class="safety-mini"><h3>☀️ UV Risk</h3><strong id="sUVStatus">-</strong></div>
+    </div>
+    <div class="workout-decision"><div>🏃 CAN I WORKOUT NOW?</div><div id="workoutDecision" class="decision">-</div><div id="workoutDecisionMessage" class="small-note">-</div></div>
+    <div class="safety-detail"><b>💧 Smart Hydration Reminder</b><div id="hydrationAlert" class="tag" style="margin-top:9px">-</div><p id="hydrationMessage" class="small-note">-</p></div>
+    <div class="recommendation"><b>💡 Smart Recommendation</b><p id="smartRecommendation" style="margin-bottom:0">-</p></div>
+    <div class="safety-detail"><b>🚨 Smart Alerts</b><ul id="smartAlerts" class="alert-list"></ul></div>
+    <div class="safety-detail"><b>⏰ Safe Workout Window</b><p id="safeWorkoutWindow" class="small-note">-</p></div>
+    <div class="safety-detail"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><b>📈 Assessment History</b><button onclick="clearHistory()" style="border:0;background:#e8f6f5;color:#08726e;border-radius:9px;padding:6px 9px;font-size:11px;font-weight:800">Clear</button></div><div style="overflow:auto"><table class="history-table"><thead><tr><th>Time</th><th>Score</th><th>Status</th></tr></thead><tbody id="historyBody"></tbody></table></div></div>
+    <div class="safety-detail">
+      <b>📊 Safety Score Trend</b>
+      <div id="historyGraph" class="history-graph"></div>
+      <p id="trendMessage" class="small-note" style="margin:10px 0 0">Run an assessment to start tracking your trend.</p>
+    </div>
+    <div class="safety-detail"><b>📋 Daily Health Report</b><div id="dailyReport" class="report-card" style="margin-top:10px"></div></div>
+  </div>
+</section>
+</main>
+
+<nav class="bottom-nav">
+  <button onclick="showSection('homeSection')">🏠<br>Home</button>
+  <button onclick="showSection('symptomChecker')">🤖<br>AI Check</button>
+  <button onclick="showSection('nutritionSection')">🥗<br>Nutrition</button>
+  <button onclick="showSection('profileSection')">👤<br>Profile</button>
+</nav>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+$('enterButton').addEventListener('click',()=>{
+  const name=$('nameInput').value.trim();
+  if(!name){alert('Please enter your name.');$('nameInput').focus();return;}
+  $('loginScreen').style.display='none';$('appContent').style.display='block';$('userName').textContent=name;$('profileName').textContent=name;
+});
+$('nameInput').addEventListener('keydown',e=>{if(e.key==='Enter')$('enterButton').click()});
+
+function showSection(id){document.querySelectorAll('.app-section').forEach(s=>s.classList.remove('active'));const el=$(id);if(el)el.classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+
+function assessHealth(){
+ const hr=+$('heartRate').value||0, body=+$('bodyTemperature').value||0, ambient=+$('ambientTemperature').value||0, hum=+$('humidity').value||0, uv=+$('uvIndex').value||0, mins=+$('exerciseMinutes').value||0, pre=+$('preExerciseWeight').value||0, post=+$('postExerciseWeight').value||0, fluid=+$('fluidIntake').value||0, urine=+$('urineOutput').value||0;
+ if(!hr||!body||!ambient||!hum||!mins){alert('Please enter the main health and environmental values.');return}
+ let dehydration=pre&&post?Math.max(0,((pre-post)/pre)*100):0;
+ let sweat=pre&&post?Math.max(0,(pre-post)+fluid-urine):0;
+ let rate=mins?sweat/(mins/60):0;
+ let hydration=dehydration>=3?'High Risk':dehydration>=2?'Moderate Risk':'Low Risk';
+ let uvRisk=uv>=8?'High Risk':uv>=6?'Moderate Risk':'Low Risk';
+ let tempRisk=body>=39?'High Risk':body>=38?'Moderate Risk':'Low Risk';
+ let heatScore=(ambient>=35?50:ambient>=30?25:0)+(hum>=80?30:hum>=70?15:0)+(mins>=60?20:mins>=30?10:0)+(dehydration>=3?30:dehydration>=2?15:0);heatScore=Math.min(100,heatScore);
+ let heat=heatScore>=70?'High Risk':heatScore>=40?'Moderate Risk':'Low Risk';
+ let overall=[hydration,uvRisk,tempRisk,heat].includes('High Risk')?'High Risk':[hydration,uvRisk,tempRisk,heat].includes('Moderate Risk')?'Moderate Risk':'Low Risk';
+ $('overallRisk').textContent=overall;$('dehydrationPercent').textContent=dehydration.toFixed(2)+' %';$('sweatLossLitres').textContent=sweat.toFixed(2)+' L';$('sweatRate').textContent=rate.toFixed(2)+' L/hour';$('hydrationRisk').textContent=hydration;$('uvRisk').textContent=uvRisk;$('heatRisk').textContent=heat;$('heatScore').textContent=heatScore+' / 100';
+ $('healthRecommendation').textContent=overall==='High Risk'?'Consider stopping strenuous activity, moving to a safer environment, and seeking professional medical advice if symptoms are concerning or worsening.':overall==='Moderate Risk'?'Take appropriate rest, maintain hydration, and monitor symptoms and environmental conditions.':'Continue monitoring your health indicators and follow general safety practices.';
+ $('healthResult').style.display='block';$('lastResult').innerHTML='<strong>Overall Risk:</strong> '+overall+'<br><br><strong>Dehydration:</strong> '+dehydration.toFixed(2)+'%';
+}
+
+function previewSkinImage(){const file=$('skinImage').files[0],img=$('skinPreview');if(!file)return;const reader=new FileReader();reader.onload=e=>{img.src=e.target.result;img.style.display='block'};reader.readAsDataURL(file)}
+function screenSkinImage() {
+
+    const fileInput =
+        document.getElementById("skinImage");
+
+    const symptom =
+        document.getElementById("skinSymptom").value;
+
+    const duration =
+        document.getElementById("skinDuration").value;
+
+    const discomfort =
+        document.getElementById("skinDiscomfort").value;
+
+
+    if (
+        !fileInput.files ||
+        !fileInput.files[0]
+    ) {
+
+        alert("Please upload an image first.");
+
+        return;
+    }
+
+
+    if (
+        !symptom ||
+        !duration ||
+        !discomfort
+    ) {
+
+        alert(
+            "Please complete the symptom details."
+        );
+
+        return;
+    }
+
+
+    let finding =
+        "General skin irritation pattern";
+
+    let reason =
+        "The selected symptoms may be associated with irritation, allergy, heat, friction or other skin conditions.";
+
+    let risk =
+        "Needs Review";
+
+    let confidence =
+        "Preliminary prototype indication";
+
+    let message =
+        "Monitor the affected area and consider professional healthcare advice if symptoms continue or worsen.";
+
+
+    if (symptom === "redness") {
+
+        finding =
+            "Possible irritation / inflammatory pattern";
+
+        reason =
+            "Redness can occur due to irritation, allergy, friction, heat or other inflammatory conditions.";
+
+        confidence =
+            "Moderate prototype indication";
+    }
+
+
+    else if (symptom === "rash") {
+
+        finding =
+            "Possible rash pattern";
+
+        reason =
+            "A rash-like appearance may be associated with irritation, allergy, heat exposure or other skin conditions.";
+
+        confidence =
+            "Moderate prototype indication";
+    }
+
+
+    else if (symptom === "itching") {
+
+        finding =
+            "Possible irritation / allergic pattern";
+
+        reason =
+            "Itching may occur with irritation, allergy, dryness, insect exposure or other conditions.";
+
+        confidence =
+            "Preliminary prototype indication";
+    }
+
+
+    else if (symptom === "swelling") {
+
+        finding =
+            "Possible inflammatory pattern";
+
+        reason =
+            "Localized swelling can have several possible causes including irritation, allergy, injury or inflammation.";
+
+        confidence =
+            "Preliminary prototype indication";
+    }
+
+
+    else if (symptom === "dryness") {
+
+        finding =
+            "Possible dry / irritated skin pattern";
+
+        reason =
+            "Dryness can be associated with environmental conditions, irritation, frequent washing or other skin conditions.";
+
+        confidence =
+            "Preliminary prototype indication";
+    }
+
+
+    if (duration === "week") {
+
+        risk = "Needs Professional Review";
+
+        message =
+            "The symptom has persisted for more than a week. Consider evaluation by a qualified healthcare professional.";
+
+    }
+
+
+    if (discomfort === "yes") {
+
+        risk = "Needs Review";
+
+    }
+
+
+    document.getElementById(
+        "skinFinding"
+    ).textContent = finding;
+
+
+    document.getElementById(
+        "skinReason"
+    ).textContent = reason;
+
+
+    document.getElementById(
+        "skinRisk"
+    ).textContent = risk;
+
+
+    document.getElementById(
+        "skinConfidence"
+    ).textContent = confidence;
+
+
+    document.getElementById(
+        "skinMessage"
+    ).textContent = message;
+
+
+    document.getElementById(
+        "skinResult"
+    ).style.display = "block";
+
+
+    document.getElementById(
+        "skinResult"
+    ).scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+function analyzeSymptoms(){const itch=$('itching').value,pain=$('pain').value,days=+$('days').value||0;let r;if(pain==='yes'&&days>=3)r='Preliminary Screening: Needs Review. Consider professional healthcare advice, especially if symptoms continue or worsen.';else if(itch==='yes')r='Preliminary Screening: Possible Irritation. Monitor the affected area and consider professional advice if symptoms continue or worsen.';else r='Preliminary Screening: Lower Screening Risk. Continue monitoring and seek professional advice if you have concerns.';$('symptomResultText').textContent=r;$('symptomResult').style.display='block'}
+function checkWorkout(){const t=+$('workoutTemperature').value||0,h=+$('workoutHumidity').value||0,uv=+$('workoutUV').value||0,p=+$('precipitation').value||0;let rating='GOOD',msg='Current conditions are generally suitable for outdoor activity. Follow normal hydration and sun-safety practices.';if(p>70){rating='INDOOR';msg='High precipitation probability. Consider an indoor workout or wait for safer conditions.'}else if(t>=35||h>=80||uv>=8){rating='POOR';msg='Environmental conditions may increase safety concerns. Consider postponing intense outdoor exercise or choosing a cooler environment.'}else if(t>=30||h>=70||uv>=6){rating='CAUTION';msg='Use caution during outdoor activity. Take breaks, maintain hydration, and consider sun protection.'}$('workoutRating').textContent=rating;$('workoutMessage').textContent=msg;$('workoutResult').style.display='block'}
+function getNutritionGuidance(){const heat=$('nutritionHeatRisk').value,mins=+$('nutritionExerciseMinutes').value||0;let title='Standard Training Nutrition Guidance',items=['Maintain appropriate hydration throughout the day.','Choose balanced meals containing carbohydrates, protein, fruits and vegetables.','Support recovery with adequate food and rest.','Monitor how you feel during and after exercise.'];if(heat==='High Risk'&&mins>=60){title='High Heat-Risk Recovery Guidance';items=['Prioritize hydration before, during and after exercise.','Take appropriate recovery breaks.','Choose a balanced recovery meal with carbohydrates and protein.','Monitor for concerning symptoms and seek professional advice when appropriate.']}$('nutritionTitle').textContent=title;$('nutritionGuidance').innerHTML='';items.forEach(x=>{const li=document.createElement('li');li.textContent=x;li.style.marginBottom='10px';$('nutritionGuidance').appendChild(li)});$('nutritionResult').style.display='block'}
+
+function runSmartAthleteAssessment(){
+ const d=+$('sDehydration').value||0,hr=+$('sHeartRate').value||0,t=+$('sTemperature').value||0,h=+$('sHumidity').value||0,uv=+$('sUV').value||0,mins=+$('sWorkout').value||0;
+ let score=100;
+ if(d>=3)score-=30;else if(d>=2)score-=15;
+ if(hr>=150)score-=25;else if(hr>=120)score-=10;
+ if(t>=35)score-=25;else if(t>=30)score-=10;
+ if(h>=80)score-=20;else if(h>=70)score-=10;
+ if(uv>=8)score-=15;else if(uv>=6)score-=8;
+ if(mins>=90)score-=10;
+ score=Math.max(0,Math.min(100,score));
+ const status=score>=80?'SAFE':score>=60?'MODERATE':'HIGH RISK';
+ $('safetyScore').textContent=score+'/100';$('safetyStatus').textContent=status;$('scoreFill').style.width=score+'%';
+ $('sHydrationStatus').textContent=d>=3?'High Risk':d>=2?'Moderate':'Good';$('sHeartStatus').textContent=hr>=150?'High':hr>=120?'Attention':'Normal';$('sHeatStatus').textContent=(t>=35||h>=80)?'High':(t>=30||h>=70)?'Moderate':'Low';$('sUVStatus').textContent=uv>=8?'High':uv>=6?'Moderate':'Low';
+ let decision='🟢 WORKOUT CONDITIONS LOOK GOOD',message='The entered prototype conditions look generally favorable. Continue normal safety precautions.';
+ if(score<60){decision='🔴 AVOID INTENSE OUTDOOR WORKOUT';message='Higher risk indicators were detected. Consider rest or a safer environment and seek professional help if concerning symptoms occur.'}else if(score<80){decision='🟡 WORKOUT WITH CAUTION';message='Consider lower intensity, hydration breaks and closer monitoring.'}
+ $('workoutDecision').textContent=decision;$('workoutDecisionMessage').textContent=message;
+ let hyd,hydMsg;if(d>=3){hyd='🚨 HYDRATION NEEDED';hydMsg='Your dehydration indicator is high. Take a hydration break before continuing.'}else if(d>=2){hyd='⚠️ HYDRATION REMINDER';hydMsg='Your hydration indicator needs attention. Take regular water breaks during the workout.'}else{hyd='💧 HYDRATION LOOKS GOOD';hydMsg='Your current hydration indicator looks favorable. Continue regular hydration.'}$('hydrationAlert').textContent=hyd;$('hydrationMessage').textContent=hydMsg;
+ let rec=status==='HIGH RISK'?'Reduce or pause strenuous activity and move to a safer environment.':status==='MODERATE'?'Use caution, maintain hydration and consider reducing workout intensity.':'Current entered indicators are generally favorable for the planned activity.';$('smartRecommendation').textContent=rec;
+ const alerts=[];if(d>=2)alerts.push('Hydration needs attention.');if(hr>=120)alerts.push('Heart-rate indicator needs closer monitoring.');if(t>=30||h>=70)alerts.push('Heat conditions may require additional caution.');if(uv>=6)alerts.push('UV exposure may require sun-safety precautions.');if(!alerts.length)alerts.push('No major alert from the entered prototype values.');$('smartAlerts').innerHTML=alerts.map(a=>'<li>'+a+'</li>').join('');
+ $('safeWorkoutWindow').textContent=(t>=30||uv>=6)?'Prefer cooler periods such as early morning or evening; this is an awareness-based suggestion, not a medical instruction.':'Current entered environmental indicators do not trigger a timing warning.';
+ const now=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});let hist=JSON.parse(localStorage.getItem('athleteHistory')||'[]');hist.unshift({time:now,score,status});hist=hist.slice(0,6);localStorage.setItem('athleteHistory',JSON.stringify(hist));renderHistory(hist);
+ $('dailyReport').innerHTML='<div class="report-row"><span>Safety Score</span><b>'+score+'/100</b></div><div class="report-row"><span>Hydration</span><b>'+$('sHydrationStatus').textContent+'</b></div><div class="report-row"><span>Heat Risk</span><b>'+$('sHeatStatus').textContent+'</b></div><div class="report-row"><span>UV Risk</span><b>'+$('sUVStatus').textContent+'</b></div><div class="report-row"><span>Workout Decision</span><b>'+decision.replace(/^\S+\s/,'')+'</b></div>';
+ $('safetyOutput').style.display='block';
+}
+function renderHistory(hist){
+  $('historyBody').innerHTML=hist.length
+    ?hist.map(x=>'<tr><td>'+x.time+'</td><td><b>'+x.score+'</b></td><td>'+x.status+'</td></tr>').join('')
+    :'<tr><td colspan="3">No history yet</td></tr>';
+
+  const graph=$('historyGraph');
+  if(!graph)return;
+
+  if(!hist.length){
+    graph.innerHTML='<div class="small-note" style="margin:auto">No assessments recorded yet.</div>';
+    $('trendMessage').textContent='Run an assessment to start tracking your safety trend.';
+    return;
+  }
+
+  const latestFirst=hist.slice(0,6);
+  const chronological=[...latestFirst].reverse();
+  graph.innerHTML=chronological.map(x=>{
+    const height=Math.max(6,Math.round(x.score*0.95));
+    return '<div class="graph-col">'+
+      '<div class="graph-score">'+x.score+'</div>'+
+      '<div class="graph-bar" style="height:'+height+'px"></div>'+
+      '<div class="graph-time">'+x.time+'</div>'+
+      '</div>';
+  }).join('');
+
+  const scores=hist.map(x=>Number(x.score));
+  const latest=scores[0];
+  const previous=scores.length>1?scores[1]:null;
+  let msg='Latest safety score: '+latest+'/100.';
+  if(previous!==null){
+    const diff=latest-previous;
+    if(diff>0) msg+=' Your latest score improved by '+diff+' points.';
+    else if(diff<0) msg+=' Your latest score decreased by '+Math.abs(diff)+' points.';
+    else msg+=' Your latest score is unchanged from the previous assessment.';
+  }
+  $('trendMessage').textContent=msg;
+}
+
+function clearHistory(){
+  localStorage.removeItem('athleteHistory');
+  renderHistory([]);
+}
+function fillSample(){$('sDehydration').value='2.22';$('sHeartRate').value='85';$('sTemperature').value='30';$('sHumidity').value='65';$('sUV').value='5';$('sWorkout').value='60';runSmartAthleteAssessment()}
+renderHistory(JSON.parse(localStorage.getItem('athleteHistory')||'[]'));
+function logout(){$('appContent').style.display='none';$('loginScreen').style.display='flex';$('nameInput').value=''}
+function saveAthleteProfile() {
+
+    const profile = {
+
+        name: document.getElementById("profileFullName").value,
+
+        age: document.getElementById("profileAge").value,
+
+        gender: document.getElementById("profileGender").value,
+
+        sport: document.getElementById("profileSport").value,
+
+        fitness: document.getElementById("profileFitness").value,
+
+        goal: document.getElementById("profileGoal").value,
+
+        height: document.getElementById("profileHeight").value,
+
+        weight: document.getElementById("profileWeight").value
+
+    };
+
+
+    if (profile.name.trim() === "") {
+
+        alert("Please enter your name.");
+
+        return;
+
+    }
+
+
+    localStorage.setItem(
+        "athleteProfile",
+        JSON.stringify(profile)
+    );
+
+
+    displayAthleteProfile(profile);
+
+
+    document.getElementById(
+        "profileSavedMessage"
+    ).style.display = "block";
+
+
+    setTimeout(function () {
+
+        document.getElementById(
+            "profileSavedMessage"
+        ).style.display = "none";
+
+    }, 2500);
+
+}
+
+
+
+function displayAthleteProfile(profile) {
+
+    document.getElementById(
+        "savedProfileDetails"
+    ).innerHTML = `
+
+        <div class="result-box">
+
+            <p>
+                👤 <strong>Name:</strong>
+                ${profile.name || "-"}
+            </p>
+
+            <p>
+                🎂 <strong>Age:</strong>
+                ${profile.age || "-"}
+            </p>
+
+            <p>
+                ⚧️ <strong>Gender:</strong>
+                ${profile.gender || "-"}
+            </p>
+
+            <p>
+                🏃 <strong>Sport:</strong>
+                ${profile.sport || "-"}
+            </p>
+
+            <p>
+                💪 <strong>Fitness Level:</strong>
+                ${profile.fitness || "-"}
+            </p>
+
+            <p>
+                🎯 <strong>Workout Goal:</strong>
+                ${profile.goal || "-"}
+            </p>
+
+            <p>
+                📏 <strong>Height:</strong>
+                ${profile.height || "-"} cm
+            </p>
+
+            <p>
+                ⚖️ <strong>Weight:</strong>
+                ${profile.weight || "-"} kg
+            </p>
+
+        </div>
+
+    `;
+
+}
+
+
+
+function loadAthleteProfile() {
+
+    const savedProfile =
+        localStorage.getItem("athleteProfile");
+
+
+    if (!savedProfile) {
+
+        return;
+
+    }
+
+
+    const profile =
+        JSON.parse(savedProfile);
+
+
+    document.getElementById(
+        "profileFullName"
+    ).value = profile.name || "";
+
+
+    document.getElementById(
+        "profileAge"
+    ).value = profile.age || "";
+
+
+    document.getElementById(
+        "profileGender"
+    ).value = profile.gender || "";
+
+
+    document.getElementById(
+        "profileSport"
+    ).value = profile.sport || "";
+
+
+    document.getElementById(
+        "profileFitness"
+    ).value = profile.fitness || "";
+
+
+    document.getElementById(
+        "profileGoal"
+    ).value = profile.goal || "";
+
+
+    document.getElementById(
+        "profileHeight"
+    ).value = profile.height || "";
+
+
+    document.getElementById(
+        "profileWeight"
+    ).value = profile.weight || "";
+
+
+    displayAthleteProfile(profile);
+
+}
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        loadAthleteProfile();
+
+    }
+);
+// ========================================
+// ATHLETE WELLNESS & INJURY RISK
+// ========================================
+
+function calculateAthleteRisk(){
+
+    const duration =
+        Number(
+            document.getElementById("riskDuration").value
+        ) || 0;
+
+
+    const intensity =
+        Number(
+            document.getElementById("riskIntensity").value
+        ) || 0;
+
+
+    const fatigue =
+        Number(
+            document.getElementById("riskFatigue").value
+        ) || 0;
+
+
+    const heartRate =
+        Number(
+            document.getElementById("riskHeartRate").value
+        ) || 0;
+
+
+    if(
+        duration === 0 ||
+        intensity === 0 ||
+        heartRate === 0
+    ){
+
+        alert(
+            "Please enter workout duration, intensity and heart rate."
+        );
+
+        return;
+
+    }
+
+
+    // -----------------------------
+    // RISK CALCULATION
+    // -----------------------------
+
+    let riskPoints = 0;
+
+
+    // Workout duration
+
+    if(duration >= 90){
+
+        riskPoints += 2;
+
+    }
+
+    else if(duration >= 60){
+
+        riskPoints += 1;
+
+    }
+
+
+    // Workout intensity
+
+    riskPoints += intensity;
+
+
+    // Fatigue
+
+    if(fatigue >= 8){
+
+        riskPoints += 3;
+
+    }
+
+    else if(fatigue >= 5){
+
+        riskPoints += 2;
+
+    }
+
+    else if(fatigue >= 3){
+
+        riskPoints += 1;
+
+    }
+
+
+    // Heart rate
+
+    if(heartRate >= 180){
+
+        riskPoints += 3;
+
+    }
+
+    else if(heartRate >= 160){
+
+        riskPoints += 2;
+
+    }
+
+    else if(heartRate >= 140){
+
+        riskPoints += 1;
+
+    }
+
+
+    // -----------------------------
+    // INJURY RISK
+    // -----------------------------
+
+    let injuryRisk;
+
+    let injuryAdvice;
+
+    let riskClass;
+
+
+    if(riskPoints >= 8){
+
+        injuryRisk = "HIGH";
+
+        riskClass = "risk-high";
+
+        injuryAdvice =
+            "Reduce workout intensity and prioritize recovery.";
+
+    }
+
+    else if(riskPoints >= 5){
+
+        injuryRisk = "MODERATE";
+
+        riskClass = "risk-medium";
+
+        injuryAdvice =
+            "Monitor fatigue and consider a lighter workout.";
+
+    }
+
+    else{
+
+        injuryRisk = "LOW";
+
+        riskClass = "risk-low";
+
+        injuryAdvice =
+            "Current inputs indicate a lower prototype risk.";
+
+    }
+
+
+    // -----------------------------
+    // WELLNESS SCORE
+    // -----------------------------
+
+    let wellnessScore =
+        100 - (riskPoints * 7);
+
+
+    if(wellnessScore < 35){
+
+        wellnessScore = 35;
+
+    }
+
+
+    if(wellnessScore > 100){
+
+        wellnessScore = 100;
+
+    }
+
+
+    // -----------------------------
+    // RECOVERY
+    // -----------------------------
+
+    let recovery;
+
+    let recoveryAdvice;
+
+
+    if(fatigue >= 8){
+
+        recovery = "REST";
+
+        recoveryAdvice =
+            "High fatigue detected. Prioritize recovery.";
+
+    }
+
+    else if(fatigue >= 5){
+
+        recovery = "LIGHT";
+
+        recoveryAdvice =
+            "Consider a lighter workout.";
+
+    }
+
+    else{
+
+        recovery = "GOOD";
+
+        recoveryAdvice =
+            "Recovery input is currently low.";
+
+    }
+
+
+    // -----------------------------
+    // RECOMMENDATION
+    // -----------------------------
+
+    let recommendation;
+
+
+    if(injuryRisk === "HIGH"){
+
+        recommendation = "REST";
+
+    }
+
+    else if(injuryRisk === "MODERATE"){
+
+        recommendation = "REDUCE";
+
+    }
+
+    else{
+
+        recommendation = "CONTINUE";
+
+    }
+
+
+    // -----------------------------
+    // DISPLAY RESULT
+    // -----------------------------
+
+    document.getElementById(
+        "wellnessScore"
+    ).innerText =
+        wellnessScore + "/100";
+
+
+    const injuryElement =
+        document.getElementById(
+            "injuryRisk"
+        );
+
+
+    injuryElement.innerText =
+        injuryRisk;
+
+
+    injuryElement.className =
+        "wellness-value " +
+        riskClass;
+
+
+    document.getElementById(
+        "injuryAdvice"
+    ).innerText =
+        injuryAdvice;
+
+
+    document.getElementById(
+        "recoveryStatus"
+    ).innerText =
+        recovery;
+
+
+    document.getElementById(
+        "recoveryAdvice"
+    ).innerText =
+        recoveryAdvice;
+
+
+    document.getElementById(
+        "heartRateResult"
+    ).innerText =
+        heartRate + " BPM";
+
+
+    document.getElementById(
+        "workoutRecommendation"
+    ).innerText =
+        recommendation;
+
+
+    document.getElementById(
+        "recommendationText"
+    ).innerText =
+
+        injuryRisk === "HIGH"
+
+        ? "Avoid pushing through high fatigue."
+
+        :
+
+        injuryRisk === "MODERATE"
+
+        ? "Reduce intensity and monitor your condition."
+
+        :
+
+        "Current inputs support normal training.";
+
+}
+function calculateAthleteRisk() {
+
+    const duration =
+        Number(document.getElementById("riskDuration").value) || 0;
+
+    const intensity =
+        Number(document.getElementById("riskIntensity").value) || 0;
+
+    const fatigue =
+        Number(document.getElementById("riskFatigue").value) || 0;
+
+    const heartRate =
+        Number(document.getElementById("riskHeartRate").value) || 0;
+
+
+    if (duration === 0 || intensity === 0 || heartRate === 0) {
+
+        alert("Please enter all required details.");
+
+        return;
+    }
+
+
+    let points = 0;
+
+
+    // Workout duration
+    if (duration >= 90) {
+        points += 2;
+    }
+    else if (duration >= 60) {
+        points += 1;
+    }
+
+
+    // Workout intensity
+    points += intensity;
+
+
+    // Fatigue
+    if (fatigue >= 8) {
+        points += 3;
+    }
+    else if (fatigue >= 5) {
+        points += 2;
+    }
+    else if (fatigue >= 3) {
+        points += 1;
+    }
+
+
+    // Heart rate
+    if (heartRate >= 180) {
+        points += 3;
+    }
+    else if (heartRate >= 160) {
+        points += 2;
+    }
+    else if (heartRate >= 140) {
+        points += 1;
+    }
+
+
+    let risk;
+    let advice;
+
+
+    if (points >= 8) {
+
+        risk = "HIGH";
+
+        advice =
+            "Reduce workout intensity and take recovery time.";
+
+    }
+    else if (points >= 5) {
+
+        risk = "MODERATE";
+
+        advice =
+            "Consider a lighter workout and monitor fatigue.";
+
+    }
+    else {
+
+        risk = "LOW";
+
+        advice =
+            "Current inputs indicate lower prototype risk.";
+
+    }
+
+
+    let score = 100 - (points * 7);
+
+    if (score < 35) {
+        score = 35;
+    }
+
+
+    let recovery;
+
+
+    if (fatigue >= 8) {
+
+        recovery = "REST";
+
+    }
+    else if (fatigue >= 5) {
+
+        recovery = "LIGHT WORKOUT";
+
+    }
+    else {
+
+        recovery = "GOOD";
+
+    }
+
+
+    let recommendation;
+
+
+    if (risk === "HIGH") {
+
+        recommendation = "REST";
+
+    }
+    else if (risk === "MODERATE") {
+
+        recommendation = "REDUCE INTENSITY";
+
+    }
+    else {
+
+        recommendation = "CONTINUE";
+
+    }
+
+
+    document.getElementById("wellnessScore").innerText =
+        score + "/100";
+
+
+    document.getElementById("injuryRisk").innerText =
+        risk;
+
+
+    document.getElementById("injuryAdvice").innerText =
+        advice;
+
+
+    document.getElementById("recoveryStatus").innerText =
+        recovery;
+
+
+    document.getElementById("workoutRecommendation").innerText =
+        recommendation;
+
+}
+// ==========================================
+// ATHLETE WELLNESS & RISK ANALYSIS
+// ==========================================
+
+function analyzeAthleteWellness() {
+
+    // Get values
+    const durationElement =
+        document.getElementById("awDuration");
+
+    const intensityElement =
+        document.getElementById("awIntensity");
+
+    const fatigueElement =
+        document.getElementById("awFatigue");
+
+    const heartRateElement =
+        document.getElementById("awHeartRate");
+
+
+    // Check elements
+    if (
+        !durationElement ||
+        !intensityElement ||
+        !fatigueElement ||
+        !heartRateElement
+    ) {
+
+        alert(
+            "Wellness fields are not connected correctly."
+        );
+
+        return;
+    }
+
+
+    // Read values
+    const duration =
+        Number(durationElement.value);
+
+    const intensity =
+        Number(intensityElement.value);
+
+    const fatigue =
+        Number(fatigueElement.value);
+
+    const heartRate =
+        Number(heartRateElement.value);
+
+
+    // Validate
+    if (!duration) {
+
+        alert(
+            "Please enter Workout Duration."
+        );
+
+        durationElement.focus();
+
+        return;
+    }
+
+
+    if (!intensity) {
+
+        alert(
+            "Please select Workout Intensity."
+        );
+
+        intensityElement.focus();
+
+        return;
+    }
+
+
+    if (
+        !heartRate ||
+        heartRate < 40 ||
+        heartRate > 220
+    ) {
+
+        alert(
+            "Please enter a valid Heart Rate."
+        );
+
+        heartRateElement.focus();
+
+        return;
+    }
+
+
+    // ======================================
+    // RISK CALCULATION
+    // ======================================
+
+    let points = 0;
+
+
+    // Duration
+    if (duration >= 90) {
+
+        points += 2;
+
+    } else if (duration >= 60) {
+
+        points += 1;
+
+    }
+
+
+    // Intensity
+    points += intensity;
+
+
+    // Fatigue
+    if (fatigue >= 8) {
+
+        points += 3;
+
+    } else if (fatigue >= 5) {
+
+        points += 2;
+
+    } else if (fatigue >= 3) {
+
+        points += 1;
+
+    }
+
+
+    // Heart rate
+    if (heartRate >= 180) {
+
+        points += 3;
+
+    } else if (heartRate >= 160) {
+
+        points += 2;
+
+    } else if (heartRate >= 140) {
+
+        points += 1;
+
+    }
+
+
+    // ======================================
+    // INJURY RISK
+    // ======================================
+
+    let risk;
+    let advice;
+
+
+    if (points >= 8) {
+
+        risk = "HIGH";
+
+        advice =
+            "Reduce workout intensity and prioritize recovery.";
+
+    }
+
+    else if (points >= 5) {
+
+        risk = "MODERATE";
+
+        advice =
+            "Consider a lighter workout and monitor fatigue.";
+
+    }
+
+    else {
+
+        risk = "LOW";
+
+        advice =
+            "Current inputs indicate a lower prototype risk.";
+
+    }
+
+
+    // ======================================
+    // WELLNESS SCORE
+    // ======================================
+
+    let score =
+        100 - (points * 7);
+
+
+    if (score < 35) {
+
+        score = 35;
+
+    }
+
+
+    if (score > 100) {
+
+        score = 100;
+
+    }
+
+
+    // ======================================
+    // RECOVERY
+    // ======================================
+
+    let recovery;
+
+
+    if (fatigue >= 8) {
+
+        recovery = "REST";
+
+    }
+
+    else if (fatigue >= 5) {
+
+        recovery = "LIGHT WORKOUT";
+
+    }
+
+    else {
+
+        recovery = "GOOD";
+
+    }
+
+
+    // ======================================
+    // RECOMMENDATION
+    // ======================================
+
+    let recommendation;
+
+
+    if (risk === "HIGH") {
+
+        recommendation =
+            "REST & RECOVER";
+
+    }
+
+    else if (risk === "MODERATE") {
+
+        recommendation =
+            "REDUCE INTENSITY";
+
+    }
+
+    else {
+
+        recommendation =
+            "CONTINUE NORMAL TRAINING";
+
+    }
+
+
+    // ======================================
+    // DISPLAY RESULT
+    // ======================================
+
+    document.getElementById(
+        "awScore"
+    ).innerText =
+        score + "/100";
+
+
+    const riskBox =
+        document.getElementById("awRisk");
+
+
+    riskBox.innerText =
+        risk;
+
+
+    if (risk === "HIGH") {
+
+        riskBox.style.color = "#c53030";
+
+    }
+
+    else if (risk === "MODERATE") {
+
+        riskBox.style.color = "#b7791f";
+
+    }
+
+    else {
+
+        riskBox.style.color = "#087f5b";
+
+    }
+
+
+    document.getElementById(
+        "awRiskAdvice"
+    ).innerText =
+        advice;
+
+
+    document.getElementById(
+        "awRecovery"
+    ).innerText =
+        recovery;
+
+
+    document.getElementById(
+        "awRecommendation"
+    ).innerText =
+        recommendation;
+
+
+    // ======================================
+    // SAVE RESULT
+    // ======================================
+
+    const result = {
+
+        score: score,
+
+        risk: risk,
+
+        recovery: recovery,
+
+        recommendation: recommendation,
+
+        duration: duration,
+
+        intensity: intensity,
+
+        fatigue: fatigue,
+
+        heartRate: heartRate,
+
+        date: new Date().toLocaleString()
+
+    };
+
+
+    localStorage.setItem(
+        "athleteWellnessResult",
+        JSON.stringify(result)
+    );
+
+}
+</script>
+<!-- ================= ATHLETE WELLNESS & RISK ================= -->
+
+<section id="wellnessSection" class="app-section">
+
+  <div class="welcome-card">
+    <h2>🧠 Athlete Wellness & Risk</h2>
+    <p>Smart workout safety assessment</p>
+  </div>
+
+  <div class="card-section">
+
+    <h2>🏃 Injury Risk Assessment</h2>
+
+    <label>Workout Duration (minutes)</label>
+    <input
+      type="number"
+      id="riskDuration"
+      placeholder="Example: 60"
+    >
+
+    <label>Workout Intensity</label>
+    <select id="riskIntensity">
+      <option value="">Select intensity</option>
+      <option value="1">Low</option>
+      <option value="2">Moderate</option>
+      <option value="3">High</option>
+    </select>
+
+    <label>Fatigue Level</label>
+
+    <input
+      type="range"
+      id="riskFatigue"
+      min="0"
+      max="10"
+      value="3"
+      oninput="document.getElementById('fatigueValue').innerText=this.value"
+    >
+
+    <p>
+      Fatigue:
+      <strong id="fatigueValue">3</strong>/10
+    </p>
+
+    <label>Heart Rate (BPM)</label>
+
+    <input
+      type="number"
+      id="riskHeartRate"
+      placeholder="Example: 120"
+    >
+
+    <button
+      type="button"
+      class="primary-btn"
+      onclick="calculateAthleteRisk()"
+    >
+      🧠 Analyze Risk
+    </button>
+
+  </div>
+
+
+  <!-- RESULT -->
+
+  <div class="card-section">
+
+    <h2>📊 Athlete Wellness Score</h2>
+
+    <div
+      id="wellnessScore"
+      style="
+        font-size:42px;
+        font-weight:bold;
+        text-align:center;
+        margin:20px;
+        color:#087f5b;
+      "
+    >
+      --
+    </div>
+
+
+    <div class="wellness-grid">
+
+      <div class="wellness-card">
+
+        <h3>🤕 Injury Risk</h3>
+
+        <div
+          id="injuryRisk"
+          class="wellness-value"
+        >
+          --
+        </div>
+
+        <p id="injuryAdvice">
+          Complete the assessment.
+        </p>
+
+      </div>
+
+
+      <div class="wellness-card">
+
+        <h3>😴 Recovery</h3>
+
+        <div
+          id="recoveryStatus"
+          class="wellness-value"
+        >
+          --
+        </div>
+
+        <p id="recoveryAdvice">
+          Recovery status will appear here.
+        </p>
+
+      </div>
+
+
+      <div class="wellness-card">
+
+        <h3>❤️ Heart Rate</h3>
+
+        <div
+          id="heartRateResult"
+          class="wellness-value"
+        >
+          --
+        </div>
+
+      </div>
+
+
+      <div class="wellness-card">
+
+        <h3>💡 Recommendation</h3>
+
+        <div
+          id="workoutRecommendation"
+          class="wellness-value"
+        >
+          --
+        </div>
+
+        <p id="recommendationText">
+          Complete the assessment.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <p class="small-note">
+
+      ⚠️ This is a prototype risk indicator.
+      It is not a medical diagnosis.
+
+    </p>
+
+  </div>
+
+</section>
+
+
+<style>
+
+.wellness-grid{
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(2,1fr);
+
+  gap:15px;
+
+  margin-top:15px;
+
+}
+
+
+.wellness-card{
+
+  background:#ffffff;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  box-shadow:
+  0 5px 18px rgba(0,0,0,0.08);
+
+}
+
+
+.wellness-value{
+
+  font-size:28px;
+
+  font-weight:bold;
+
+  margin:10px 0;
+
+}
+
+
+.risk-low{
+
+  color:#087f5b;
+
+}
+
+
+.risk-medium{
+
+  color:#b7791f;
+
+}
+
+
+.risk-high{
+
+  color:#c53030;
+
+}
+
+
+@media(max-width:650px){
+
+  .wellness-grid{
+
+    grid-template-columns:1fr;
+
+  }
+
+}
+
+</style>
+<!-- ================= ATHLETE WELLNESS & RISK ================= -->
+
+<div class="card-section" id="athleteWellnessBox">
+
+    <h2>🧠 Athlete Wellness & Risk</h2>
+
+    <p>
+        Analyze workout duration, intensity, fatigue and heart rate.
+    </p>
+
+    <!-- Workout Duration -->
+    <label for="awDuration">
+        🏃 Workout Duration (minutes)
+    </label>
+
+    <input
+        type="number"
+        id="awDuration"
+        min="1"
+        placeholder="Example: 60"
+    >
+
+
+    <!-- Workout Intensity -->
+    <label for="awIntensity">
+        ⚡ Workout Intensity
+    </label>
+
+    <select id="awIntensity">
+
+        <option value="">
+            Select intensity
+        </option>
+
+        <option value="1">
+            Low
+        </option>
+
+        <option value="2">
+            Moderate
+        </option>
+
+        <option value="3">
+            High
+        </option>
+
+    </select>
+
+
+    <!-- Fatigue -->
+    <label>
+        😴 Fatigue Level:
+        <strong id="awFatigueValue">3</strong>/10
+    </label>
+
+    <input
+        type="range"
+        id="awFatigue"
+        min="0"
+        max="10"
+        value="3"
+        step="1"
+        oninput="
+          document.getElementById('awFatigueValue').innerText = this.value;
+        "
+    >
+
+    <small>
+        0 = Low fatigue &nbsp; | &nbsp; 10 = High fatigue
+    </small>
+
+
+    <!-- Heart Rate -->
+    <label for="awHeartRate">
+        ❤️ Heart Rate (BPM)
+    </label>
+
+    <input
+        type="number"
+        id="awHeartRate"
+        min="40"
+        max="220"
+        placeholder="Example: 120"
+    >
+
+
+    <!-- Analyze -->
+    <button
+        type="button"
+        class="primary-btn"
+        onclick="analyzeAthleteWellness()"
+    >
+        🧠 Analyze Risk
+    </button>
+
+
+    <!-- Result -->
+    <div
+        id="awResult"
+        style="
+            margin-top:20px;
+            padding:20px;
+            border-radius:18px;
+            background:#eefafa;
+        "
+    >
+
+        <h3>📊 Athlete Wellness Score</h3>
+
+        <div
+            id="awScore"
+            style="
+                font-size:40px;
+                font-weight:bold;
+                text-align:center;
+                margin:15px;
+            "
+        >
+            --
+        </div>
+
+
+        <h3>🤕 Injury Risk</h3>
+
+        <div
+            id="awRisk"
+            style="
+                font-size:26px;
+                font-weight:bold;
+            "
+        >
+            --
+        </div>
+
+        <p id="awRiskAdvice">
+            Complete the assessment.
+        </p>
+
+
+        <h3>😴 Recovery Status</h3>
+
+        <div
+            id="awRecovery"
+            style="
+                font-size:22px;
+                font-weight:bold;
+            "
+        >
+            --
+        </div>
+
+
+        <h3>💡 Smart Recommendation</h3>
+
+        <div
+            id="awRecommendation"
+            style="
+                font-size:22px;
+                font-weight:bold;
+            "
+        >
+            --
+        </div>
+
+    </div>
+
+
+    <p style="font-size:12px;">
+        ⚠️ Prototype safety indicator only. It is not a medical diagnosis.
+    </p>
+
+</div>
+</body>
+</section>
